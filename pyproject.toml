@@ -1,0 +1,10 @@
+[project]
+name = "astralhub"
+version = "1.0.0"
+dependencies = [
+    "flet>=0.25.0",
+]
+
+[tool.flet]
+org = "com.astral"
+product = "Astral Hub"
