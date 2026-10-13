@@ -2,7 +2,7 @@
 name = "astralhub"
 version = "1.0.0"
 dependencies = [
-    "flet>=0.25.0",
+    "flet==0.25.2",
 ]
 
 [tool.flet]
