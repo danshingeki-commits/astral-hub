@@ -18,6 +18,12 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: "3.24.5"
+
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
@@ -26,11 +32,12 @@ jobs:
       - name: Instalar Flet y compilar APK
         run: |
           pip install "flet==0.25.2"
-          yes | flet build apk
-          
+          yes | flutter doctor --android-licenses || true
+          flet build apk
 
       - name: Guardar instalador APK
         uses: actions/upload-artifact@v4
         with:
           name: AstralHub-Instalador
           path: build/apk/*.apk
+          
