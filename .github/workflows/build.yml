@@ -12,11 +12,6 @@ jobs:
       - name: Descargar codigo
         uses: actions/checkout@v4
 
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
@@ -28,14 +23,19 @@ jobs:
         with:
           channel: "stable"
 
-      - name: Instalar Flet
+      - name: Aceptar licencias de Android
         run: |
-          python -m pip install --upgrade pip
-          pip install flet
+          yes | flutter doctor --android-licenses || true
 
-      - name: Compilar APK
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Flet y compilar
         run: |
-          flet build apk
+          pip install flet
+          flet build apk --verbose
 
       - name: Guardar instalador APK
         uses: actions/upload-artifact@v4
