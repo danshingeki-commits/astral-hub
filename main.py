@@ -33,15 +33,40 @@ def main(page: ft.Page):
     def obtener_bd():
         try:
             raw = page.client_storage.get("astral_cuentas")
-            return json.loads(raw) if raw else {}
+            datos = json.loads(raw) if raw else {}
+            if not isinstance(datos, dict):
+                return {}
+            # Ignore malformed entries instead of crashing the account screen.
+            bd_segura = {}
+            for plataforma, cuentas in datos.items():
+                if not isinstance(plataforma, str) or not isinstance(cuentas, list):
+                    continue
+                cuentas_validas = []
+                for cuenta in cuentas:
+                    if (
+                        isinstance(cuenta, dict)
+                        and isinstance(cuenta.get("usuario"), str)
+                        and isinstance(cuenta.get("password"), str)
+                    ):
+                        cuentas_validas.append({
+                            "usuario": cuenta["usuario"],
+                            "password": cuenta["password"],
+                        })
+                bd_segura[plataforma] = cuentas_validas
+            return bd_segura
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return {}
         except Exception:
+            mostrar_toast("⚠️ No se pudieron leer las cuentas guardadas")
             return {}
 
     def guardar_bd(datos):
         try:
             page.client_storage.set("astral_cuentas", json.dumps(datos))
+            return True
         except Exception:
-            pass
+            mostrar_toast("❌ No se pudieron guardar los cambios en este dispositivo")
+            return False
 
     bd = obtener_bd()
     filtro_actual = "Todos"
