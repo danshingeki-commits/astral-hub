@@ -1,7 +1,10 @@
 import flet as ft
 import json
+import os
 
-ADMIN_PIN = "Astral2236#"
+# Configure this outside the source code (environment variable).
+# An empty value disables creator-panel access instead of using a public PIN.
+ADMIN_PIN = os.environ.get("ASTRAL_ADMIN_PIN", "").strip()
 
 PLATAFORMAS = [
     {"nombre": "Spotify", "cat": "Música", "icono": ft.Icons.MUSIC_NOTE, "color": "#1DB954"},
@@ -242,6 +245,9 @@ def main(page: ft.Page):
         )
 
         def comprobar_pin(e):
+            if not ADMIN_PIN:
+                mostrar_toast("⚠️ Panel desactivado: configura ASTRAL_ADMIN_PIN en el entorno")
+                return
             if txt_pin.value == ADMIN_PIN:
                 dlg_pin.open = False
                 page.update()
