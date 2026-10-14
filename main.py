@@ -264,7 +264,7 @@ def main(page: ft.Page):
                         width=320
                     ),
                     ft.Divider(color="#3B2D54"),
-                    ft.Text("Stock en memoria:", size=12, color="#A855F7", weight=ft.FontWeight.BOLD),
+                    ft.Text("Cuentas guardadas:", size=12, color="#A855F7", weight=ft.FontWeight.BOLD),
                     col_lista
                 ], scroll=ft.ScrollMode.AUTO),
                 width=340,
@@ -402,6 +402,38 @@ def main(page: ft.Page):
                 ])
             )
             grid_cards.controls.append(card)
+
+        if not grid_cards.controls:
+            grid_cards.controls.append(
+                ft.Container(
+                    col={"xs": 12},
+                    bgcolor="#150F24",
+                    border_radius=16,
+                    padding=24,
+                    border=ft.border.all(1, "#2E2145"),
+                    alignment=ft.alignment.center,
+                    content=ft.Column(
+                        [
+                            ft.Icon(ft.Icons.SEARCH_OFF, size=32, color="#A78BFA"),
+                            ft.Text(
+                                "No encontramos plataformas",
+                                size=16,
+                                weight=ft.FontWeight.BOLD,
+                                color="#E9D5FF",
+                                text_align=ft.TextAlign.CENTER,
+                            ),
+                            ft.Text(
+                                "Prueba con otro nombre o cambia la categoría.",
+                                size=12,
+                                color="#94A3B8",
+                                text_align=ft.TextAlign.CENTER,
+                            ),
+                        ],
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        spacing=8,
+                    ),
+                )
+            )
 
         page.update()
 
