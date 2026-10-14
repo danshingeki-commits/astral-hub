@@ -65,6 +65,16 @@ def main(page: ft.Page):
             )
         else:
             for i, c in enumerate(cuentas, start=1):
+                clave_visible = {"valor": False}
+                texto_clave = ft.Text("••••••••", expand=True, color="#F8FAFC", size=13)
+
+                def alternar_clave(e, control=texto_clave, estado=clave_visible, clave=c['password']):
+                    estado["valor"] = not estado["valor"]
+                    control.value = clave if estado["valor"] else "••••••••"
+                    e.control.icon = ft.Icons.VISIBILITY_OFF if estado["valor"] else ft.Icons.VISIBILITY
+                    e.control.tooltip = "Ocultar clave" if estado["valor"] else "Mostrar clave"
+                    page.update()
+
                 detalles.append(
                     ft.Container(
                         bgcolor="#171226",
@@ -87,7 +97,14 @@ def main(page: ft.Page):
                             ]),
                             ft.Row([
                                 ft.Icon(ft.Icons.KEY, size=16, color="#4ADE80"),
-                                ft.Text(c['password'], expand=True, color="#F8FAFC", size=13),
+                                texto_clave,
+                                ft.IconButton(
+                                    ft.Icons.VISIBILITY,
+                                    icon_size=16,
+                                    icon_color="#C084FC",
+                                    tooltip="Mostrar clave",
+                                    on_click=alternar_clave
+                                ),
                                 ft.IconButton(
                                     ft.Icons.COPY,
                                     icon_size=16,
